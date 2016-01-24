@@ -999,15 +999,7 @@ namespace ArcAnnihilation
                     }
                     continue;
                 }
-				if (item.Name == "item_medallion_of_courage" || item.Name == "item_solar_crest")
-				{
-					if (distance < 650)
-					{
-							item.UseAbility(target);
-							Utils.Sleep(500, item.Name + me.Handle);
-					}
-					continue;
-				}
+				
 				item.UseAbility();
                 item.UseAbility(target);
                 item.UseAbility(target.Position);
@@ -1066,7 +1058,16 @@ namespace ArcAnnihilation
                     Utils.Sleep(500, bkb.Name + me.Handle);
                 }
             }
-            if (!items.Any()) return;
+			var medall = inventory.FirstOrDefault(x => x.Name == "item_medallion_of_courage" || x.Name == "item_solar_crest");
+			if (medall != null && medall.CanBeCasted() && Utils.SleepCheck(medall.Name + me.Handle))
+			{
+				if (distance < 700)
+				{
+					medall.UseAbility(target);
+					Utils.Sleep(500, medall.Name + me.Handle);
+				}
+			}
+			if (!items.Any()) return;
             {
                 var r = me.Spellbook.SpellR;
                 if (r == null || r.CanBeCasted()) return;
